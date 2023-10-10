@@ -1,7 +1,7 @@
 #include <ostream>
 #include "list.h"
 
-template <template T>
+template <typename T>
 class ListArray : public List<T> {
 	private:
 		T* arr;
@@ -10,7 +10,7 @@ class ListArray : public List<T> {
 		static const int MINSIZE;
 		void resize(int new_size);
 	public:
-		ListArray() {};
+		ListArray();
 		~ListArray();
 		T operator[](int pos);
 		friend std::ostream& operator<<(std::ostream &out, const ListArray<T> &list);
@@ -44,8 +44,12 @@ T ListArray<T>::operator[](int pos) {
 		throw std::out_of_range("Posición fuera del rango del array");
 }
 template<typename T>
-friend std::ostream& ListArray<T>::operator<<(std::ostream &out, const ListArray<T> &list) {
-
+std::ostream& operator<<(std::ostream &out, const ListArray<T> &list) {
+	for(int i=0;i<list.n;i++) {
+		out << list.arr[i] << " ";
+	}
+	out << std::endl;
+	return out;
 }
 template<typename T>
 void ListArray<T>::resize(int new_size) {
@@ -61,8 +65,19 @@ void ListArray<T>::resize(int new_size) {
 }
 template<typename T>
 void ListArray<T>::insert(int pos, T e) {
-	
-
+	if(pos < (-1) || pos > (n-1))
+		throw std::out_of_range("Posición fuera del rango del array");
+	if(pos == (n-1)) {
+		arr[pos] = e;
+	} else {
+		while(pos < n) {
+			arr[pos] ^= e;
+			e ^= arr[pos];
+			arr[pos] ^= e;
+			pos++;
+		}
+	}
+	n++;
 	if(n == max)
 		resize(max+10);
 }
@@ -92,6 +107,33 @@ T ListArray<T>::remove(int pos) {
 	return aux;
 }
 template<typename T>
+T ListArray<T>::get(int pos) {
+	if(pos < (-1) || pos > (n-1)) 
+		throw std::out_of_range("Posición fuera del rango del array");
+	return arr[pos];
+}
+template<typename T>
+int ListArray<T>::search(T e) {
+	for(int i=0;i<n;i++) {
+		if(arr[i] == e)
+			return i;
+		i++;
+	}
+	return -1;
+}
+template<typename T>
+bool ListArray<T>::empty() {
+	if(n != 0) 
+		return false;
+	else
+		return true;
+}
+template<typename T>
+int ListArray<T>::size() {
+	return n;
+}
+
+
 
 
 
