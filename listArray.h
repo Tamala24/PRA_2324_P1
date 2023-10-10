@@ -1,5 +1,6 @@
 #include <ostream>
 #include "list.h"
+#define offrange throw std::out_of_range("Posición inválida!!");
 
 template <typename T>
 class ListArray : public List<T> {
@@ -7,13 +8,21 @@ class ListArray : public List<T> {
 		T* arr;
 		int max;
 		int n;
-		static const int MINSIZE;
+		static const int MINSIZE = 2;
 		void resize(int new_size);
 	public:
 		ListArray();
 		~ListArray();
 		T operator[](int pos);
-		friend std::ostream& operator<<(std::ostream &out, const ListArray<T> &list);
+		friend std::ostream& operator<<(std::ostream &out, const ListArray<T> &list) {
+			out << "List => [" << std::endl;
+			if(list.n != 0) {
+				for(int i=0;i<list.n;i++) 
+					out << list.arr[i] << std::endl;
+			}
+			out << "]";
+			return out;
+		}
 
 		void insert(int pos, T e) override;
         	void append(T e) override;
@@ -31,6 +40,8 @@ ListArray<T>::ListArray() {
 	arr = new T[MINSIZE];
 	max = MINSIZE;
 	n = 0;
+	for(int i=0;i<MINSIZE;i++)
+		arr[i] = -1;
 }
 template<typename T>
 ListArray<T>::~ListArray() {
@@ -38,18 +49,10 @@ ListArray<T>::~ListArray() {
 }
 template<typename T>
 T ListArray<T>::operator[](int pos) {
-	if(pos > (-1) && pos < n) 
+	if(pos > (-1) && pos < max) 
 		return arr[pos];
 	else
-		throw std::out_of_range("Posición fuera del rango del array");
-}
-template<typename T>
-std::ostream& operator<<(std::ostream &out, const ListArray<T> &list) {
-	for(int i=0;i<list.n;i++) {
-		out << list.arr[i] << " ";
-	}
-	out << std::endl;
-	return out;
+		offrange;
 }
 template<typename T>
 void ListArray<T>::resize(int new_size) {
@@ -60,14 +63,18 @@ void ListArray<T>::resize(int new_size) {
 		i++;
 	}
 	delete[] arr;
+	while(i<new_size) {
+		a[i] = -1;
+		i++;
+	}
 	arr = a;
 	max = new_size;
 }
 template<typename T>
 void ListArray<T>::insert(int pos, T e) {
-	if(pos < (-1) || pos > (n-1))
-		throw std::out_of_range("Posición fuera del rango del array");
-	if(pos == (n-1)) {
+	if((pos < 0) || (pos > n)) {
+		offrange;
+	} else if(pos == n) {
 		arr[pos] = e;
 	} else {
 		while(pos < n) {
@@ -76,6 +83,7 @@ void ListArray<T>::insert(int pos, T e) {
 			arr[pos] ^= e;
 			pos++;
 		}
+		arr[pos] = e;
 	}
 	n++;
 	if(n == max)
@@ -92,24 +100,25 @@ void ListArray<T>::prepend(T e) {
 template<typename T>
 T ListArray<T>::remove(int pos) {
 	T aux = arr[pos];
-	if(pos < (-1) || pos > (n-1)) 
-		throw std::out_of_range("Posición fuera del rango del array");
-	else if(pos == (n-1)) {
+	if(pos < 0 || pos > (n-1)) {
+		offrange;
+	} else if(pos == (n-1)) {
 		arr[pos] = -1;
-		n--;	
-	} else 
-		while(pos < (n-2)) {
+	} else { 
+		while(pos != n) {
 			arr[pos] = arr[pos+1];
 			pos++;
 		}
-	if(n < (max-20)) 
+	}
+	n--;
+	if((max - n) > 10) 
 		resize(max-10);
 	return aux;
 }
 template<typename T>
 T ListArray<T>::get(int pos) {
 	if(pos < (-1) || pos > (n-1)) 
-		throw std::out_of_range("Posición fuera del rango del array");
+		offrange;
 	return arr[pos];
 }
 template<typename T>
