@@ -15,13 +15,14 @@ class ListLinked : public List<T> {
 	~ListLinked();
 	T operator[](int pos);
 	friend std::ostream& operator<<(std::ostream &out, const ListLinked<T> &list) {
-		out << "List => [" << std::endl;
+		out << "List => [";
 		if(list.n > 0) {
 			Node<T>* aux = list.first;
 			while(aux != nullptr) {
-				out << aux->data << std::endl;
+				out  << std::endl << aux->data;
 				aux = aux->next;
 			}
+			out << std::endl;
 		}
 		out << "]";
 		return out;
@@ -53,17 +54,6 @@ ListLinked<T>::~ListLinked(){
 }
 template <typename T>
 T ListLinked<T>::operator[](int pos) {
-	/*if((pos < 0) || (pos > (n-1)))
-		offrange;
-	if(pos == 0)
-		return first->data;
-	else {
-		Node<T>* aux = first;
-		for(int i=0;i!=pos;i++) {
-			aux = aux->next;
-		}
-		return aux->data;
-	}*/
 	return get(pos);
 }
 template <typename T>
@@ -72,20 +62,24 @@ void ListLinked<T>::insert(int pos, T e) {
 		offrange;
 	} else if(empty()) {
 		first = new Node(e);
+	} else if(pos == 0) { 
+		first = new Node(e, first); 
 	} else if(pos == n) {
-		Node<T>* aux = first->next;
-		for(int i=0;i<pos;++i)
+		Node<T>* aux = first;
+		while(aux->next != nullptr)
 			aux=aux->next;
 		aux->next = new Node(e);
 	} else {
 		Node<T>* aux = first;
 		Node<T>* next = first->next;
-		for(int i=0;i<pos;i++) { 
-			aux = next;
-			next = next->next;
-		}
+		if(next != nullptr)  
+			for(int i=1;i<pos;i++) { 
+				aux = next;
+				next = next->next;
+			} 
 		aux->next = new Node(e,next);
 	}
+	n++;
 }
 template <typename T>
 void ListLinked<T>::append(T e) {
@@ -97,26 +91,27 @@ void ListLinked<T>::prepend(T e) {
 }
 template <typename T>
 T ListLinked<T>::remove(int pos) {
+	T a;
 	if((pos < 0) || (pos > (n-1)) || empty()) {
 		offrange;
 	} else if(pos == 0) {
 		Node<T>* aux = first->next;
-		T a = first->data;
+		a = first->data;
 		delete first;
 		first = aux;
-		return a;
 	} else {
 		Node<T>* paux = first;
 		Node<T>* del = first->next;
-		for(int i=0;i<pos;++i) { 
+		for(int i=1;i<pos;i++) { 
 			paux = del;
 			del = del->next;
 		}
-		T a = del->data;
+		a = del->data;
 		paux->next = del->next;
 		delete del;
-		return a;
 	}
+	n--;
+	return a;
 }
 template <typename T>
 T ListLinked<T>::get(int pos) {
@@ -126,7 +121,7 @@ T ListLinked<T>::get(int pos) {
 		return first->data;
 	else {
 		Node<T>* aux = first->next;
-		for(int i=0;i<pos;++i) 
+		for(int i=1;i<pos;i++) 
 			aux = aux->next;
 		return aux->data;
 	}
