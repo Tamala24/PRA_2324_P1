@@ -1,8 +1,9 @@
 #include <iostream>
 #include "Rectangle.h"
 #include "Point2D.h"
+//#include "Shape.h"
 
-int main(){
+int main() {
     Rectangle r1;
     Point2D* vertices = new Point2D[4];
     vertices[0] = Point2D(-1,1);
@@ -41,5 +42,5 @@ int main(){
     std::cout << "r3.translate(100, 100); Aleshores..." << std::endl;
     std::cout << "r1 = " << r1 << std::endl;
     std::cout << "r3 = " << r3 << std::endl;
-
+    return 0;
 }

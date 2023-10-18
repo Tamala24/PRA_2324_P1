@@ -34,7 +34,7 @@ Rectangle::~Rectangle() {
 	delete[] vs;
 }
 Point2D Rectangle::get_vertex(int ind) const {
-	if(ind > -1 && ind < N_VERTICES)
+	if((ind > -1) && (ind < N_VERTICES))
 		return vs[ind];
 	else
 		throw std::out_of_range("Índice no válido");
@@ -44,10 +44,11 @@ Point2D Rectangle::operator[](int ind) const {
 }
 void Rectangle::set_vertices(Point2D* vertices) {
 	if(check(vertices)) {
-                vs[0] = vertices[0];
-                vs[1] = vertices[1];
-                vs[2] = vertices[2];
-                vs[3] = vertices[3];
+		for(int i = 0; i < N_VERTICES; i++) {
+                vs[i].x = vertices[i].x;
+                vs[i].y = vertices[i].y;
+		}
+	//delete[] vertices;
         } else
                 throw std::invalid_argument("Vertices no forman un rectángulo");
 }
@@ -65,10 +66,10 @@ std::ostream& operator<<(std::ostream &out, const Rectangle &r) {
 	return out;
 }
 double Rectangle::area() const {
-	return Point2D::distance(vs[0], vs[1]) * Point2D::distance(vs[2], vs[1]);
+	return (Point2D::distance(vs[0], vs[1]) * Point2D::distance(vs[2], vs[1]));
 }
 double Rectangle::perimeter() const {
-	return (Point2D::distance(vs[0], vs[1]) * 2) + (Point2D::distance(vs[2], vs[1]) * 2);
+	return ((Point2D::distance(vs[0], vs[1]) * 2) + (Point2D::distance(vs[2], vs[1]) * 2));
 }
 void Rectangle::translate(double incX, double incY) {
 	for(int i = 0; i < N_VERTICES; i++) {
@@ -77,5 +78,5 @@ void Rectangle::translate(double incX, double incY) {
 	}
 }
 void Rectangle::print() {
-	std::cout << this;
+	std::cout << *this;
 }	

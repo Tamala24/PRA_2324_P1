@@ -26,6 +26,6 @@ Rectangle.o: Rectangle.cpp Rectangle.h
 bin/testRectangle: testRectangle.cpp Rectangle.o Shape.o Point2D.o
 	g++ -c testRectangle.cpp
 	mkdir -p bin
-	g++ -o bin/testRectangle Rectangle.o Shape.o Point2D.o 
+	g++ -o bin/testRectangle testRectangle.o Rectangle.o Shape.o Point2D.o 
 clean:
 	rm -r *.o *.gch bin
