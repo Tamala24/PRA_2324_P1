@@ -78,5 +78,5 @@ void Rectangle::translate(double incX, double incY) {
 	}
 }
 void Rectangle::print() {
-	std::cout << *this;
+	std::cout << this;
 }	
