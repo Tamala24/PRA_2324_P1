@@ -36,10 +36,8 @@ class ListArray : public List<T> {
 };
 
 template<typename T>
-ListArray<T>::ListArray() {
+ListArray<T>::ListArray() : max{MINSIZE}, n{0} {
 	arr = new T[MINSIZE];
-	max = MINSIZE;
-	n = 0;
 	for(int i=0;i<MINSIZE;i++)
 		arr[i] = -1;
 }

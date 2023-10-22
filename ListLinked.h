@@ -39,10 +39,7 @@ class ListLinked : public List<T> {
 };
 
 template <typename T>
-ListLinked<T>::ListLinked(){
-	n = 0;
-	first = nullptr;
-}
+ListLinked<T>::ListLinked() : n{0}, first{nullptr} {}
 template <typename T>
 ListLinked<T>::~ListLinked(){
 	Node<T>* aux;

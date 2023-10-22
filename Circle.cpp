@@ -2,20 +2,17 @@
 #include <cmath>
 #define PI 3.141592
 
-Circle::Circle() : Shape() {
+Circle::Circle() : Shape(), radius{1.0} {
 	center.x = 0;
 	center.y = 0;
-	radius = 1.0;
 }
-Circle::Circle(std::string color, Point2D center, double radius) : Shape(color) {
+Circle::Circle(std::string color, Point2D center, double radius) : Shape(color), radius{radius} {
 	this->center.x = center.x;
 	this->center.y = center.y;
-	this->radius = radius;
 }
-Circle::Circle(Point2D center, double radius) : Shape() {
+Circle::Circle(Point2D center, double radius) : Shape(), radius{radius} {
 	this->center.x = center.x;
 	this->center.y = center.y;
-	this->radius = radius;
 }
 Point2D Circle::get_center() const {
 	return center;
@@ -45,5 +42,5 @@ void Circle::translate(double incX, double incY) {
 	center.y += incY;
 }
 void Circle::print() {
-	std::cout << this << std::endl;
+	std::cout << *this << std::endl;
 }

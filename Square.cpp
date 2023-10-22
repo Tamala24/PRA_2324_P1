@@ -30,7 +30,7 @@ std::ostream& operator<<(std::ostream &out, const Square &square) {
 	return out;
 }
 void Square::print() {
-	std::cout << this;
+	std::cout << *this << std::endl;
 }
 double Square::area() const {
 	return Point2D::distance(vs[0], vs[1]) * Point2D::distance(vs[1], vs[2]);

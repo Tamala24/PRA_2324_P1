@@ -33,5 +33,10 @@ bin/testSquare: Square.o Rectangle.o Point2D.o Shape.o testSquare.cpp
 	g++ -c testSquare.cpp
 	mkdir -p bin
 	g++ -o bin/testSquare testSquare.o Point2D.o Shape.o Rectangle.o Square.o
+Drawing.o: Drawing.h Drawing.cpp
+	g++ -c Drawing.cpp
+bin/testDrawing: testDrawing.cpp Drawing.o Square.o Rectangle.o Circle.o Shape.o Point2D.o
+	mkdir -p bin
+	g++ -o bin/testDrawing testDrawing.cpp Drawing.o Square.o Rectangle.o Circle.o Shape.o Point2D.o
 clean:
 	rm -r *.o *.gch bin
