@@ -75,10 +75,11 @@ void ListArray<T>::insert(int pos, T e) {
 	} else if(pos == n) {
 		arr[pos] = e;
 	} else {
+		T aux;
 		while(pos < n) {
-			arr[pos] ^= e;
-			e ^= arr[pos];
-			arr[pos] ^= e;
+			aux = arr[pos];
+			arr[pos] = e;
+			e = aux;
 			pos++;
 		}
 		arr[pos] = e;
